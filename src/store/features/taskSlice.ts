@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Task {
+export interface Task {
   id: string;
   title: string;
   description: string;
@@ -10,7 +10,7 @@ interface Task {
   status: string;
 }
 
-interface TaskState {
+export interface TaskState {
   inprogress: Task[];
   onhold: Task[];
   completed: Task[];
@@ -68,7 +68,6 @@ const taskSlice = createSlice({
         state[newStatus as keyof TaskState].splice(position, 0, taskToMove);
       }
     },
-
     deleteTask: (state, action: PayloadAction<string>) => {
       for (const key of Object.keys(state) as (keyof TaskState)[]) {
         state[key] = state[key].filter((task) => task.id !== action.payload);

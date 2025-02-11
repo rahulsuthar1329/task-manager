@@ -17,7 +17,7 @@ interface TaskProps {
   priority: string;
   category: string;
   status: string;
-  setActiveCard: Dispatch<SetStateAction<string | null>>;
+  setActiveCard?: Dispatch<SetStateAction<string | null>>;
   // onClick: () => void;
 }
 
@@ -38,9 +38,9 @@ const Task: React.FC<TaskProps> = ({
   return (
     <article
       className="bg-[#ffffff18] rounded-lg px-4 py-4 cursor-pointer hover:bg-[#ffffff25] active:cursor-grab active:opacity-75 active:outline-2 active:outline-gray-300"
-      draggable
-      onDragStart={() => onDragStart(setActiveCard, id)}
-      onDragEnd={() => setActiveCard(null)}
+      draggable={setActiveCard ? "true" : "false"}
+      onDragStart={() => setActiveCard && onDragStart(setActiveCard, id)}
+      onDragEnd={() => setActiveCard && setActiveCard(null)}
       onClick={() => setIsPopupOpen(true)}
     >
       <div className="flex justify-between items-center">

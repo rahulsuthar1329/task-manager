@@ -18,7 +18,7 @@ const Searchbar: React.FC<SearchbarProps> = ({ query, setQuery }) => {
         placeholder="Search by task name, id"
         className="outline-none w-full"
       />
-      <CancelIcon size={15} onClick={() => setQuery("")} />
+      {query && <CancelIcon size={15} onClick={() => setQuery("")} />}
     </div>
   );
 };
