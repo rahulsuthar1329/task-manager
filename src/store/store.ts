@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./features/authSlice";
 import storage from "redux-persist/lib/storage";
+
+import authReducer from "./features/authSlice";
+import taskReducer from "./features/taskSlice";
 
 import { persistReducer, persistStore } from "redux-persist";
 
@@ -12,7 +14,7 @@ const persistConfig = {
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 
 export const store = configureStore({
-  reducer: { auth: persistedAuthReducer },
+  reducer: { auth: persistedAuthReducer, tasks: taskReducer },
 });
 
 export const persistor = persistStore(store);

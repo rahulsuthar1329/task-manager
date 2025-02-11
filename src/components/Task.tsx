@@ -10,7 +10,7 @@ interface TaskProps {
   description: string;
   remainingDays: string;
   priority: string;
-  category: string; //bug, story
+  category: string;
   status: string;
   setActiveCard: Dispatch<SetStateAction<string | null>>;
 }

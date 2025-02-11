@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 
 interface DropdownProps {
+  label: string;
   options: string[];
   defaultValue?: string;
-  onSelect: (value: string) => void;
+  setSelect: (value: string) => void;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
+  label,
   options,
   defaultValue,
-  onSelect,
+  setSelect,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(defaultValue || options[0]);
@@ -28,7 +30,6 @@ const Dropdown: React.FC<DropdownProps> = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Handle keyboard navigation
   const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     const currentIndex = options.indexOf(selected);
     if (event.key === "ArrowDown") {
@@ -41,18 +42,26 @@ const Dropdown: React.FC<DropdownProps> = ({
       );
     } else if (event.key === "Enter") {
       setIsOpen(false);
-      onSelect(selected);
+      setSelect(selected);
     }
   };
 
   return (
     <div className="relative w-full" ref={dropdownRef}>
+      <label
+        htmlFor="email"
+        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >
+        {label}
+      </label>
+
       <button
-        className="w-full px-4 py-2 flex justify-between items-center bg-[#1a1e2b] text-white border border-[#2d3445] rounded-lg shadow-md focus:ring-2 focus:ring-blue-500 transition-all"
+        className="flex justify-between bg-gray-50 border outline-none text-left border-gray-300 text-gray-900 rounded-lg w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
         onKeyDown={handleKeyDown}
+        type="button"
       >
-        {selected}
+        <span>{selected}</span>
         <span
           className={`transition-transform ${
             isOpen ? "rotate-180" : "rotate-0"
@@ -72,7 +81,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               }`}
               onClick={() => {
                 setSelected(option);
-                onSelect(option);
+                setSelect(option);
                 setIsOpen(false);
               }}
             >

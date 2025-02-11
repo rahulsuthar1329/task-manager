@@ -5,7 +5,7 @@ import Popup from "./Popup";
 import CreateTask from "./CreateTask";
 
 const Filters = () => {
-  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(true);
+  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
 
   return (
     <div className="w-full px-5 h-[60px] flex items-center justify-between">
@@ -16,7 +16,7 @@ const Filters = () => {
       />
       <Filter date="25.12.2023" />
       <Popup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)}>
-        <CreateTask />
+        <CreateTask closePopup={() => setIsPopupOpen(false)} />
       </Popup>
     </div>
   );

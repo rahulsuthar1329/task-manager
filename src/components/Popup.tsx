@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
+import CancelIcon from "./../icons/CancelIcon";
 
 interface PopupProps {
   isOpen: boolean;
@@ -28,9 +29,12 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, children }) => {
       tabIndex={0}
     >
       <div
-        className="task-container w-full rounded-lg shadow text-gray-300 md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 max-h-[80vh] overflow-y-auto"
+        className="relative task-container w-full rounded-lg shadow text-gray-300 md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 max-h-[80vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
+        <div className="absolute top-8 right-5">
+          <CancelIcon size={20} onClick={onClose} />
+        </div>
         {children}
       </div>
     </div>,

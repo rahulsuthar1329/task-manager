@@ -1,9 +1,12 @@
 import TaskColumn from "./TaskColumn";
-import tasks from "../data/sampleTasks";
 import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { moveTask } from "../store/features/taskSlice";
 
 const Tasks = () => {
   const [activeCard, setActiveCard] = useState<string | null>(null);
+  const tasks = useAppSelector((state) => state.tasks);
+  const dispatch = useAppDispatch();
 
   const onDrop = (status: string, position: number) => {
     if (!activeCard) return;
@@ -11,7 +14,7 @@ const Tasks = () => {
     const allTasks = [...tasks.completed, ...tasks.inprogress, ...tasks.onhold];
 
     const taskToMove = allTasks.find(
-      (task) => task.taskId.toString() === activeCard
+      (task) => task.id.toString() === activeCard
     );
 
     if (!taskToMove) return;
@@ -20,14 +23,7 @@ const Tasks = () => {
       `${activeCard} is going from ${taskToMove.status} to ${status} and at the position ${position}`
     );
 
-    const statusKey = taskToMove?.status as keyof typeof tasks;
-    tasks[statusKey] = tasks[statusKey].filter(
-      (task) => task.taskId !== taskToMove?.taskId
-    );
-
-    taskToMove.status = status;
-
-    tasks[status as keyof typeof tasks].splice(position, 0, taskToMove);
+    dispatch(moveTask({ id: taskToMove.id, newStatus: status, position }));
   };
 
   return (

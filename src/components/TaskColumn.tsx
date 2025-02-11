@@ -3,7 +3,7 @@ import Task from "./Task";
 import DropArea from "./DropArea";
 
 interface Task {
-  taskId: number;
+  id: string;
   title: string;
   description: string;
   remainingDays: number;
@@ -35,9 +35,9 @@ const TaskColumn: FC<TaskSectionProps> = ({
       <article className="task-container flex flex-col max-h-full h-[83vh] overflow-y-auto px-2 mt-2">
         <DropArea onDrop={() => onDrop(status, 0)} />
         {tasks.map((task, index) => (
-          <Fragment key={task.taskId}>
+          <Fragment key={task.id}>
             <Task
-              id={task.taskId.toString()}
+              id={task.id.toString()}
               title={task.title}
               priority={task.priority}
               category={task.category}

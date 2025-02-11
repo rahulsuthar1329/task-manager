@@ -1,15 +1,50 @@
 import { useState } from "react";
 import Button from "./Button";
-import Link from "./Link";
 import TextInput from "./TextInput";
 import Dropdown from "./Dropdown";
+import { validateTaskDetails } from "../utils/validate";
+import { useAppDispatch } from "../store/hooks";
+import { addTask } from "../store/features/taskSlice";
+import { generateRandomId } from "../utils/commonUtils";
 
-const CreateTask = () => {
+interface CreateTaskType {
+  closePopup: () => void;
+}
+
+const CreateTask: React.FC<CreateTaskType> = ({ closePopup }) => {
+  const dispatch = useAppDispatch();
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [storyPoints, setStoryPoints] = useState("");
-  const [priority, setPriority] = useState("");
+  const [priority, setPriority] = useState("High");
   const [category, setCategory] = useState("");
+
+  const createTask = () => {
+    const errorMessage = validateTaskDetails(
+      title,
+      description,
+      storyPoints,
+      priority,
+      category
+    );
+
+    if (errorMessage) return errorMessage;
+
+    dispatch(
+      addTask({
+        id: generateRandomId(),
+        title,
+        description,
+        remainingDays: parseInt(storyPoints),
+        priority,
+        category,
+        status: "inprogress",
+      })
+    );
+
+    closePopup();
+  };
 
   return (
     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -25,28 +60,32 @@ const CreateTask = () => {
           placeholder="Task title"
         />
         <TextInput
-          type="number"
+          type="text"
           state={storyPoints}
           setState={setStoryPoints}
           label="Story points"
           placeholder="Story points"
         />
-        <Dropdown defaultValue="Please select" options={["bug", "story"]} />
-        <TextInput
-          type="text"
-          state={title}
-          setState={setTitle}
-          label="Priority of task"
-          placeholder="Priority"
+        <Dropdown
+          label="Task Category"
+          defaultValue="Please select"
+          options={["Epic", "Feature", "Spike", "Task", "Sub-task"]}
+          setSelect={setCategory}
+        />
+        <Dropdown
+          label="Task Priority"
+          defaultValue="Please select"
+          options={["Critical", "High", "Medium", "Low"]}
+          setSelect={setPriority}
         />
         <TextInput
           type="text"
-          state={title}
-          setState={setTitle}
-          label="Priority of task"
-          placeholder="Priority"
+          state={description}
+          setState={setDescription}
+          label="Task Description"
+          placeholder="Description"
         />
-        <Button title="Create Task" />
+        <Button title="Create Task" onClick={createTask} />
       </form>
     </div>
   );
