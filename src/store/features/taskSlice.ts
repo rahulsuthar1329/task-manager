@@ -33,18 +33,17 @@ const taskSlice = createSlice({
     },
     updateTask: (state, action: PayloadAction<Task>) => {
       const { id, status } = action.payload;
-      for (const key of Object.keys(state) as (keyof TaskState)[]) {
-        const index = state[key].findIndex((task) => task.id === id);
-        if (index !== -1) {
-          state[key].splice(index, 1);
-          state[status.toLowerCase().replace(" ", "") as keyof TaskState].push(
-            action.payload
-          );
-          return;
-        }
+
+      const statusKey = status as keyof TaskState;
+      const index = state[statusKey].findIndex((task) => task.id === id);
+
+      if (index !== -1) {
+        state[statusKey][index] = {
+          ...state[statusKey][index],
+          ...action.payload,
+        };
       }
     },
-
     moveTask: (
       state,
       action: PayloadAction<{

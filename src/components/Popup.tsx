@@ -21,7 +21,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, children }) => {
 
   return ReactDOM.createPortal(
     <div
-      className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-lg bg-black/30"
+      className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-lg"
       onClick={onClose}
       onKeyDown={(e) => e.key === "Enter" && onClose()}
       aria-label="Close popup"
