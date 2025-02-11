@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "./Button";
 import Link from "./Link";
 import TextInput from "./TextInput";
+import Dropdown from "./Dropdown";
 
 const CreateTask = () => {
   const [title, setTitle] = useState("");
@@ -30,6 +31,7 @@ const CreateTask = () => {
           label="Story points"
           placeholder="Story points"
         />
+        <Dropdown defaultValue="Please select" options={["bug", "story"]} />
         <TextInput
           type="text"
           state={title}
@@ -44,31 +46,7 @@ const CreateTask = () => {
           label="Priority of task"
           placeholder="Priority"
         />
-        <TextInput
-          type="text"
-          state={title}
-          setState={setTitle}
-          label="Priority of task"
-          placeholder="Priority"
-        />
-        <TextInput
-          type="text"
-          state={title}
-          setState={setTitle}
-          label="Priority of task"
-          placeholder="Priority"
-        />
-        <TextInput
-          type="text"
-          state={title}
-          setState={setTitle}
-          label="Priority of task"
-          placeholder="Priority"
-        />
-        <Button title="Create" />
-        <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-          Don’t have an account yet? <Link routeTo="/register">Sign up</Link>
-        </p>
+        <Button title="Create Task" />
       </form>
     </div>
   );
