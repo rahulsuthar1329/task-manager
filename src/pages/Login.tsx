@@ -1,11 +1,41 @@
 import { useState } from "react";
 import { TextInput, Link, Button } from "../components";
+import { useHttpClient } from "../hooks/HttpRequest";
+import { showToastSuccess } from "../utils/Toast";
+import { setLogin, User } from "../store/features/authSlice";
+import { useAppDispatch } from "../store/hooks";
+import { useNavigate } from "react-router-dom";
+
+type LoginResponseType = {
+  token: string;
+  user: User;
+};
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const httpClient = useHttpClient();
 
-  const onSubmit = () => {};
+  const resetLoginForm = () => {
+    setUsername("");
+    setPassword("");
+  };
+
+  const onSubmit = async () => {
+    const { token, user } = await httpClient.post<LoginResponseType>(
+      "/auth/login",
+      {
+        username,
+        password,
+      }
+    );
+    resetLoginForm();
+    dispatch(setLogin({ user, token }));
+    navigate("/");
+    showToastSuccess("Login successfully");
+  };
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -25,11 +55,11 @@ export default function LoginPage() {
             </h1>
             <form className="space-y-4 md:space-y-6">
               <TextInput
-                type="email"
-                state={email}
-                setState={setEmail}
-                label="Your email"
-                placeholder="user@example.com"
+                type="text"
+                state={username}
+                setState={setUsername}
+                label="Your Username"
+                placeholder="eg. johndoe123"
               />
               <TextInput
                 type="password"

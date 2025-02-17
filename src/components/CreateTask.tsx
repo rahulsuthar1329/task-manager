@@ -6,6 +6,8 @@ import { validateTaskDetails } from "../utils/validate";
 import { useAppDispatch } from "../store/hooks";
 import { addTask } from "../store/features/taskSlice";
 import { generateRandomId } from "../utils/commonUtils";
+import axios from "axios";
+import { serverUri } from "./../../path";
 
 interface CreateTaskType {
   closePopup: () => void;
@@ -20,7 +22,7 @@ const CreateTask: React.FC<CreateTaskType> = ({ closePopup }) => {
   const [priority, setPriority] = useState("High");
   const [category, setCategory] = useState("");
 
-  const createTask = () => {
+  const createTask = async () => {
     const errorMessage = validateTaskDetails(
       title,
       description,
@@ -31,17 +33,24 @@ const CreateTask: React.FC<CreateTaskType> = ({ closePopup }) => {
 
     if (errorMessage) return errorMessage;
 
-    dispatch(
-      addTask({
-        id: generateRandomId(),
-        title,
-        description,
-        remainingDays: parseInt(storyPoints),
-        priority,
-        category,
-        status: "inprogress",
-      })
-    );
+    const task = {
+      id: generateRandomId(),
+      title,
+      description,
+      remainingDays: parseInt(storyPoints),
+      priority,
+      category,
+      status: "inprogress",
+    };
+
+    dispatch(addTask(task));
+
+    try {
+      await axios.post(`${serverUri}/tasks`, [task]);
+      console.log("Successfully created task!");
+    } catch (error) {
+      console.log("Create task error: ", error);
+    }
 
     closePopup();
   };

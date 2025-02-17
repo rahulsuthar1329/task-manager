@@ -30,11 +30,11 @@ const TaskColumn: FC<TaskSectionProps> = ({
   return (
     <div className="w-1/3 px-2">
       <h4 className="pl-2">
-        {label} ({tasks.length})
+        {label} ({tasks?.length})
       </h4>
       <article className="task-container flex flex-col max-h-full h-[83vh] overflow-y-auto px-2 mt-2">
         <DropArea onDrop={() => onDrop(status, 0)} />
-        {tasks.map((task, index) => (
+        {tasks?.map((task, index) => (
           <Fragment key={task.id}>
             <Task
               id={task.id.toString()}

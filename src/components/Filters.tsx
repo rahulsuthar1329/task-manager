@@ -1,11 +1,13 @@
 import { useState } from "react";
 import Button from "./Button";
-import Filter from "./Filter";
 import Popup from "./Popup";
 import CreateTask from "./CreateTask";
+import { useAppDispatch } from "../store/hooks";
+import { setLogout } from "../store/features/authSlice";
 
 const Filters = () => {
-  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const dispatch = useAppDispatch();
 
   return (
     <div className="w-full px-5 h-[60px] flex items-center justify-between">
@@ -14,7 +16,7 @@ const Filters = () => {
         onClick={() => setIsPopupOpen(true)}
         size="sm"
       />
-      <Filter date="25.12.2023" />
+      <Button title="Logout" size="sm" onClick={() => dispatch(setLogout())} />
       <Popup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)}>
         <CreateTask closePopup={() => setIsPopupOpen(false)} />
       </Popup>
